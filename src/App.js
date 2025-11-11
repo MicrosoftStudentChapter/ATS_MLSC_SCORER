@@ -437,7 +437,6 @@ const LeaderboardPage = ({ onNavigate, onLogout }) => {
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('login');
-  const [participantData, setParticipantData] = useState(null);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -447,14 +446,12 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = (data) => {
-    setParticipantData(data);
+  const handleLogin = () => {
     setCurrentPage('home');
   };
 
   const handleLogout = () => {
     localStorage.clear();
-    setParticipantData(null);
     setCurrentPage('login');
   };
 
