@@ -1,0 +1,5 @@
+name = "ats-mlsc-scorer"
+compatibility_date = "2025-11-11"
+
+[site]
+bucket = "./build"
