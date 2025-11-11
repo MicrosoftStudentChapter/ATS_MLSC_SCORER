@@ -266,7 +266,7 @@ const HomePage = ({ onNavigate, onLogout }) => {
           <button 
             className="submit-button" 
             onClick={handleSubmit}
-            disabled={loading || uploadCount >= 5}
+            disabled={loading || uploadCount >= 10}
           >
             {loading ? 'Submitting...' : 'Submit CV'}
           </button>
