@@ -39,12 +39,49 @@ body {
 }
 
 .logout-button {
+  position: relative;
   background: transparent;
   border: none;
   font-size: 28px;
   cursor: pointer;
   color: #333;
 }
+
+/* Tooltip text */
+.logout-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 125%; /* Show above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
+
+/* Small arrow under tooltip (optional) */
+.logout-text::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+/* Show text on hover */
+.logout-button:hover .logout-text {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 /* Login Page */
 .login-card {

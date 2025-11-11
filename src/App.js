@@ -208,15 +208,15 @@ const HomePage = ({ onNavigate, onLogout }) => {
     <div className="page-container">
       <div className="header">
         <div className="logo">
-          <img src='/mlsc.png' alt='logo' height={60}></img>
+          <img src='/mlsc.png' alt='logo' height={80}></img>
         </div>
-        <button className="logout-button" onClick={onLogout}>⊗</button>
+        <button className="logout-button" onClick={onLogout}>⊗ <span class="logout-text">Logout</span> </button>
       </div>
 
       <div className="home-content-new">
         <div className="center-title">
           <h1 className="main-title">Perfect CV</h1>
-          <p>Welcome, {localStorage.getItem('participantName')} | Uploads: {uploadCount}/5</p>
+          <p>Welcome, {localStorage.getItem('participantName')} | Uploads: {uploadCount}/10</p>
         </div>
         
         <div className="sidebar">
