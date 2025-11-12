@@ -435,17 +435,15 @@ const LeaderboardPage = ({ onNavigate, onLogout }) => {
                 <th>Name</th>
                 <th>Score</th>
                 <th>Skills</th>
-                <th>Experience</th>
               </tr>
             </thead>
             <tbody>
               {leaderboardData.map((entry) => (
                 <tr key={entry.rank || entry.email}>
                   <td>{entry.rank} {getMedalEmoji(entry.rank)}</td>
-                  <td>{entry.name || entry.email}</td>
+                  <td>{entry.email}</td>
                   <td><strong>{entry.score}</strong></td>
                   <td>{entry.skills_count || 0}</td>
-                  <td>{entry.experience_years || entry.experience || 0} yrs</td>
                 </tr>
               ))}
             </tbody>
