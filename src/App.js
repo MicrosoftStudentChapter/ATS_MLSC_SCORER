@@ -225,7 +225,7 @@ const HomePage = ({ onNavigate }) => {
         onMouseEnter={(e) => e.target.style.background = '#c82333'}
         onMouseLeave={(e) => e.target.style.background = '#dc3545'}
       >
-        🚪 LOGOUT
+        Logout
       </div>
 
       <div className="header">
