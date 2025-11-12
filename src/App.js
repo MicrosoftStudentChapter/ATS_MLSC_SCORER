@@ -99,7 +99,6 @@ const LoginPage = ({ onLogin }) => {
 const HomePage = ({ onNavigate, onLogout }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  // const [jobDescription, setJobDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -178,13 +177,9 @@ const HomePage = ({ onNavigate, onLogout }) => {
       return;
     }
 
-    // if (!jobDescription || jobDescription.length < 50) {
-    //   setError('Job description must be at least 50 characters');
-    //   return;
-    // }
-
-    if (uploadCount >= 5) {
-      setError('You have reached the maximum upload limit (5)');
+    // ✅ CHANGE #1: Changed from 5 to 10
+    if (uploadCount >= 10) {
+      setError('You have reached the maximum upload limit (10)');
       return;
     }
 
@@ -221,6 +216,7 @@ const HomePage = ({ onNavigate, onLogout }) => {
       <div className="home-content-new">
         <div className="center-title">
           <h1 className="main-title">Perfect CV</h1>
+          {/* ✅ CHANGE #2: Changed from /5 to /10 */}
           <p>Welcome, {localStorage.getItem('participantName')} | Uploads: {uploadCount}/10</p>
         </div>
 
@@ -275,10 +271,11 @@ const HomePage = ({ onNavigate, onLogout }) => {
             />
           </div>
 
+          {/* ✅ CHANGE #3: Changed from >= 5 to >= 10 */}
           <button
             className="submit-button"
             onClick={handleSubmit}
-            disabled={loading || uploadCount >= 5}
+            disabled={loading || uploadCount >= 10}
           >
             {loading ? 'Analyzing Resume...' : 'Submit & Get ATS Score'}
           </button>
