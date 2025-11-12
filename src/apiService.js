@@ -1,5 +1,5 @@
 // src/apiService.js
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://backend.perfectcv.mlsctiet.com';
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 // Validate API key on load
