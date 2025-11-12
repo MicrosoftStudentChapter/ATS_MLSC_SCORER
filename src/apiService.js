@@ -1,5 +1,8 @@
 // src/apiService.js
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://backend.perfectcv.mlsctiet.com';
+// Use empty string to make requests relative to the current domain (uses Cloudflare Pages Functions as proxy)
+// In production: https://perfectcv.mlsctiet.com/api/* -> proxies to -> http://backend.perfectcv.mlsctiet.com/api/*
+// For local development, set REACT_APP_API_BASE_URL=http://backend.perfectcv.mlsctiet.com in .env.local
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 // Validate API key on load
