@@ -99,8 +99,7 @@ const LoginPage = ({ onLogin }) => {
 const HomePage = ({ onNavigate, onLogout }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [jobDescription, setJobDescription] = useState('');
-  const [jdEducation, setJdEducation] = useState('');
+  // const [jobDescription, setJobDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -179,12 +178,12 @@ const HomePage = ({ onNavigate, onLogout }) => {
       return;
     }
 
-    if (!jobDescription || jobDescription.length < 50) {
-      setError('Job description must be at least 50 characters');
-      return;
-    }
+    // if (!jobDescription || jobDescription.length < 50) {
+    //   setError('Job description must be at least 50 characters');
+    //   return;
+    // }
 
-    if (uploadCount >= 5) {
+    if (uploadCount >= 10) {
       setError('You have reached the maximum upload limit (5)');
       return;
     }
@@ -195,15 +194,11 @@ const HomePage = ({ onNavigate, onLogout }) => {
       const result = await apiService.submitResume(
         participantId,
         selectedFile,
-        jobDescription,
-        jdEducation
       );
 
       setSuccess(`Submission successful! Your ATS Score: ${result.score}`);
       setScoreResult(result);
       setSelectedFile(null);
-      setJobDescription('');
-      setJdEducation('');
       await loadUploadCount();
     } catch (err) {
       setError(err.message || 'Submission failed');
