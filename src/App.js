@@ -280,23 +280,6 @@ const HomePage = ({ onNavigate, onLogout }) => {
             />
           </div>
 
-          <textarea
-            placeholder="Job Description (min 50 chars)"
-            className="link-input"
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-            rows={4}
-            style={{ resize: 'vertical', fontFamily: 'Courier New, monospace' }}
-          />
-
-          <input
-            type="text"
-            placeholder="Education Requirements (optional)"
-            className="link-input"
-            value={jdEducation}
-            onChange={(e) => setJdEducation(e.target.value)}
-          />
-
           <button
             className="submit-button"
             onClick={handleSubmit}
