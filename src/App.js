@@ -183,7 +183,7 @@ const HomePage = ({ onNavigate, onLogout }) => {
     //   return;
     // }
 
-    if (uploadCount >= 10) {
+    if (uploadCount >= 5) {
       setError('You have reached the maximum upload limit (5)');
       return;
     }
@@ -336,7 +336,9 @@ const MyScoresPage = ({ onNavigate, onLogout }) => {
         <div className="logo">
           <img src='/mlsc.png' alt='logo' height={150} />
         </div>
-        <button className="logout-button" onClick={onLogout} title="Logout">⊗</button>
+        <button className="logout-button" onClick={onLogout} title="Logout">
+          ⊗ <span className="logout-text">Logout</span>
+        </button>
       </div>
 
       <div className="leaderboard-content">
@@ -414,7 +416,9 @@ const LeaderboardPage = ({ onNavigate, onLogout }) => {
         <div className="logo">
           <img src='/mlsc.png' alt='logo' height={60} />
         </div>
-        <button className="logout-button" onClick={onLogout} title="Logout">⊗</button>
+       <button className="logout-button" onClick={onLogout} title="Logout">
+          ⊗ <span className="logout-text">Logout</span>
+        </button>
       </div>
 
       <div className="leaderboard-content">
@@ -432,7 +436,7 @@ const LeaderboardPage = ({ onNavigate, onLogout }) => {
             <thead>
               <tr>
                 <th>Rank</th>
-                <th>Name</th>
+                <th>Email</th>
                 <th>Score</th>
                 <th>Skills</th>
               </tr>
