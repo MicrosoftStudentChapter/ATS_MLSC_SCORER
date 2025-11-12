@@ -199,7 +199,7 @@ const HomePage = ({ onNavigate, onLogout }) => {
         jdEducation
       );
       
-      setSuccess(`Submission successful! Your ATS Score: ${result.score}%`);
+      setSuccess(`Submission successful! Your ATS Score: ${result.score}`);
       setScoreResult(result);
       setSelectedFile(null);
       setJobDescription('');
@@ -298,38 +298,13 @@ const HomePage = ({ onNavigate, onLogout }) => {
 
           {scoreResult && (
             <div className="score-result">
-              <h3>ATS Score: {scoreResult.score}% - {scoreResult.verdict}</h3>
-              
-              <div className="score-breakdown">
-                <h4>Score Breakdown:</h4>
-                <p>✓ Skills Match: {scoreResult.breakdown.skills_match}/30</p>
-                <p>✓ Education: {scoreResult.breakdown.education}/20</p>
-                <p>✓ Experience: {scoreResult.breakdown.experience}/20</p>
-                <p>✓ Skills in Projects: {scoreResult.breakdown.projects}/15</p>
-                <p>✓ Keyword Relevance: {scoreResult.breakdown.keyword_relevance}/10</p>
-                <p>✓ Resume Quality: {scoreResult.breakdown.resume_quality}/5</p>
-              </div>
-              
-              <p><strong>Detected Skills:</strong> {scoreResult.skills.length > 0 ? scoreResult.skills.join(', ') : 'None detected'}</p>
-              <p><strong>Matched Skills:</strong> {scoreResult.matched_skills.length > 0 ? scoreResult.matched_skills.join(', ') : 'None matched'}</p>
-              <p><strong>Experience:</strong> {scoreResult.experience_years} years</p>
-              <p><strong>Keyword Similarity:</strong> {scoreResult.keyword_similarity}%</p>
-              <p><strong>Plagiarism Score:</strong> {scoreResult.plagiarism_score}%</p>
+              <h3>ATS Score: {scoreResult.score} - {scoreResult.verdict}</h3>
               
               {scoreResult.feedback && scoreResult.feedback.length > 0 && (
-                <div style={{ marginTop: '10px' }}>
+                <div className="feedback-section">
                   <h4>Feedback:</h4>
                   {scoreResult.feedback.map((item, idx) => (
                     <p key={idx}>• {item}</p>
-                  ))}
-                </div>
-              )}
-              
-              {scoreResult.penalties && scoreResult.penalties.length > 0 && (
-                <div style={{ marginTop: '10px' }}>
-                  <h4>Penalties:</h4>
-                  {scoreResult.penalties.map((item, idx) => (
-                    <p key={idx} style={{color: '#c62828'}}>⚠ {item}</p>
                   ))}
                 </div>
               )}
@@ -385,7 +360,7 @@ const MyScoresPage = ({ onNavigate, onLogout }) => {
 
         {bestScore !== null && bestScore > 0 && (
           <div className="best-score">
-            <h2>Best Score: {bestScore}%</h2>
+            <h2>Best Score: {bestScore}</h2>
           </div>
         )}
 
@@ -408,7 +383,7 @@ const MyScoresPage = ({ onNavigate, onLogout }) => {
               {scores.map((score, index) => (
                 <tr key={score.id || index}>
                   <td>{index + 1}</td>
-                  <td><strong>{score.score}%</strong></td>
+                  <td><strong>{score.score}</strong></td>
                   <td>{score.skills_count || 0}</td>
                   <td>{score.experience_years || 0} yrs</td>
                   <td>{new Date(score.created_at).toLocaleDateString()}</td>
@@ -483,7 +458,7 @@ const LeaderboardPage = ({ onNavigate, onLogout }) => {
                 <tr key={entry.rank || entry.email}>
                   <td>{entry.rank} {getMedalEmoji(entry.rank)}</td>
                   <td>{entry.name || entry.email}</td>
-                  <td><strong>{entry.score}%</strong></td>
+                  <td><strong>{entry.score}</strong></td>
                   <td>{entry.skills_count || 0}</td>
                   <td>{entry.experience_years || entry.experience || 0} yrs</td>
                 </tr>
