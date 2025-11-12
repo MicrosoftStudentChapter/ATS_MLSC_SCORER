@@ -39,18 +39,18 @@ const LoginPage = ({ onLogin }) => {
           <img src='/mlsc.png' height={60} alt="logo" />
         </div>
       </div>
-      
+
       <div className="login-card">
         <h1 className="page-title">Perfect CV Match 2025</h1>
         <h2 className="section-title">Register / Login</h2>
-        
+
         {error && <div className="error-message">{error}</div>}
-        
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Full Name</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="input-field"
@@ -61,8 +61,8 @@ const LoginPage = ({ onLogin }) => {
 
           <div className="form-group">
             <label>Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="input-field"
@@ -70,10 +70,10 @@ const LoginPage = ({ onLogin }) => {
               required
             />
           </div>
-          
+
           <div className="form-group">
             <label>Mobile Number</label>
-            <input 
+            <input
               type="tel"
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
@@ -82,8 +82,8 @@ const LoginPage = ({ onLogin }) => {
               required
             />
           </div>
-          
-          <button 
+
+          <button
             type="submit"
             className="login-button"
             disabled={loading}
@@ -115,7 +115,7 @@ const HomePage = ({ onNavigate, onLogout }) => {
     try {
       const participantId = localStorage.getItem('participantId');
       if (!participantId) return;
-      
+
       const data = await apiService.getUploadCount(participantId);
       setUploadCount(data.upload_count);
     } catch (err) {
@@ -193,12 +193,12 @@ const HomePage = ({ onNavigate, onLogout }) => {
     try {
       const participantId = localStorage.getItem('participantId');
       const result = await apiService.submitResume(
-        participantId, 
-        selectedFile, 
+        participantId,
+        selectedFile,
         jobDescription,
         jdEducation
       );
-      
+
       setSuccess(`Submission successful! Your ATS Score: ${result.score}`);
       setScoreResult(result);
       setSelectedFile(null);
@@ -228,7 +228,7 @@ const HomePage = ({ onNavigate, onLogout }) => {
           <h1 className="main-title">Perfect CV</h1>
           <p>Welcome, {localStorage.getItem('participantName')} | Uploads: {uploadCount}/10</p>
         </div>
-        
+
         <div className="sidebar">
           <button className="nav-button active">HOME</button>
           <button className="nav-button" onClick={() => onNavigate('leaderboard')}>Leaderboard</button>
@@ -237,11 +237,11 @@ const HomePage = ({ onNavigate, onLogout }) => {
 
         <div className="upload-card">
           <label className="file-label">Upload Resume (PDF only)</label>
-          
+
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">{success}</div>}
-          
-          <div 
+
+          <div
             className={`upload-area ${isDragging ? 'dragging' : ''}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -256,17 +256,24 @@ const HomePage = ({ onNavigate, onLogout }) => {
             }}
           >
             <div className="upload-icon">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                <circle cx="30" cy="30" r="28" stroke="#ccc" strokeWidth="2" strokeDasharray="4 4"/>
-                <path d="M30 20 L30 40 M20 30 L40 30" stroke="#999" strokeWidth="2"/>
-              </svg>
+              {!selectedFile ? (
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                  <circle cx="30" cy="30" r="28" stroke="#ccc" strokeWidth="2" strokeDasharray="4 4" />
+                  <path d="M30 20 L30 40 M20 30 L40 30" stroke="#999" strokeWidth="2" />
+                </svg>
+              ) : (
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                  <circle cx="30" cy="30" r="28" fill="#4CAF50" />
+                  <path d="M20 30 L26 36 L40 22" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
             </div>
             <p className="upload-text">
               {selectedFile ? selectedFile.name : 'Drag & drop or click to upload'}
             </p>
-            <input 
+            <input
               id="fileInput"
-              type="file" 
+              type="file"
               onChange={handleFileChange}
               accept=".pdf"
               style={{ display: 'none' }}
@@ -274,24 +281,24 @@ const HomePage = ({ onNavigate, onLogout }) => {
           </div>
 
           <textarea
-            placeholder="Job Description (min 50 chars)" 
+            placeholder="Job Description (min 50 chars)"
             className="link-input"
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
             rows={4}
             style={{ resize: 'vertical', fontFamily: 'Courier New, monospace' }}
           />
-          
-          <input 
-            type="text" 
-            placeholder="Education Requirements (optional)" 
+
+          <input
+            type="text"
+            placeholder="Education Requirements (optional)"
             className="link-input"
             value={jdEducation}
             onChange={(e) => setJdEducation(e.target.value)}
           />
-          
-          <button 
-            className="submit-button" 
+
+          <button
+            className="submit-button"
             onClick={handleSubmit}
             disabled={loading || uploadCount >= 5}
           >
@@ -301,7 +308,7 @@ const HomePage = ({ onNavigate, onLogout }) => {
           {scoreResult && (
             <div className="score-result">
               <h3>ATS Score: {scoreResult.score} - {scoreResult.verdict}</h3>
-              
+
               {scoreResult.feedback && scoreResult.feedback.length > 0 && (
                 <div className="feedback-section">
                   <h4>Feedback:</h4>
@@ -334,7 +341,7 @@ const MyScoresPage = ({ onNavigate, onLogout }) => {
         setLoading(false);
         return;
       }
-      
+
       const data = await apiService.getParticipantScores(participantId);
       setScores(data.scores || []);
       setBestScore(data.best_score || null);
@@ -349,7 +356,7 @@ const MyScoresPage = ({ onNavigate, onLogout }) => {
     <div className="page-container">
       <div className="header">
         <div className="logo">
-          <img src='/mlsc.png' alt='logo' height={60} />
+          <img src='/mlsc.png' alt='logo' height={150} />
         </div>
         <button className="logout-button" onClick={onLogout} title="Logout">⊗</button>
       </div>
@@ -377,7 +384,6 @@ const MyScoresPage = ({ onNavigate, onLogout }) => {
                 <th>#</th>
                 <th>Score</th>
                 <th>Skills</th>
-                <th>Experience</th>
                 <th>Date</th>
               </tr>
             </thead>
@@ -387,7 +393,6 @@ const MyScoresPage = ({ onNavigate, onLogout }) => {
                   <td>{index + 1}</td>
                   <td><strong>{score.score}</strong></td>
                   <td>{score.skills_count || 0}</td>
-                  <td>{score.experience_years || 0} yrs</td>
                   <td>{new Date(score.created_at).toLocaleDateString()}</td>
                 </tr>
               ))}
