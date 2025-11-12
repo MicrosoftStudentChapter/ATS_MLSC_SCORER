@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "./App.css";
 import apiService from './apiService';
 
+
 const LoginPage = ({ onLogin }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -9,14 +10,17 @@ const LoginPage = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
 
     if (!name || !email || !mobile) {
       setError('All fields are required');
       return;
     }
+
 
     setLoading(true);
     try {
@@ -32,6 +36,7 @@ const LoginPage = ({ onLogin }) => {
     }
   };
 
+
   return (
     <div className="page-container">
       <div className="header">
@@ -40,11 +45,14 @@ const LoginPage = ({ onLogin }) => {
         </div>
       </div>
 
+
       <div className="login-card">
         <h1 className="page-title">Perfect CV Match 2025</h1>
         <h2 className="section-title">Register / Login</h2>
 
+
         {error && <div className="error-message">{error}</div>}
+
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -59,6 +67,7 @@ const LoginPage = ({ onLogin }) => {
             />
           </div>
 
+
           <div className="form-group">
             <label>Email</label>
             <input
@@ -71,6 +80,7 @@ const LoginPage = ({ onLogin }) => {
             />
           </div>
 
+
           <div className="form-group">
             <label>Mobile Number</label>
             <input
@@ -82,6 +92,7 @@ const LoginPage = ({ onLogin }) => {
               required
             />
           </div>
+
 
           <button
             type="submit"
@@ -96,7 +107,8 @@ const LoginPage = ({ onLogin }) => {
   );
 };
 
-const HomePage = ({ onNavigate }) => {
+
+const HomePage = ({ onNavigate, onLogout }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -105,14 +117,17 @@ const HomePage = ({ onNavigate }) => {
   const [uploadCount, setUploadCount] = useState(0);
   const [scoreResult, setScoreResult] = useState(null);
 
+
   useEffect(() => {
     loadUploadCount();
   }, []);
+
 
   const loadUploadCount = async () => {
     try {
       const participantId = localStorage.getItem('participantId');
       if (!participantId) return;
+
 
       const data = await apiService.getUploadCount(participantId);
       setUploadCount(data.upload_count);
@@ -120,6 +135,7 @@ const HomePage = ({ onNavigate }) => {
       console.error('Failed to load upload count:', err);
     }
   };
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -138,15 +154,18 @@ const HomePage = ({ onNavigate }) => {
     }
   };
 
+
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
+
   const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDragging(false);
   };
+
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -167,25 +186,33 @@ const HomePage = ({ onNavigate }) => {
     }
   };
 
+
   const handleSubmit = async () => {
     setError('');
     setSuccess('');
     setScoreResult(null);
+
 
     if (!selectedFile) {
       setError('Please select a PDF file');
       return;
     }
 
+
     if (uploadCount >= 10) {
       setError('You have reached the maximum upload limit (10)');
       return;
     }
 
+
     setLoading(true);
     try {
       const participantId = localStorage.getItem('participantId');
-      const result = await apiService.submitResume(participantId, selectedFile);
+      const result = await apiService.submitResume(
+        participantId,
+        selectedFile,
+      );
+
 
       setSuccess(`Submission successful! Your ATS Score: ${result.score}`);
       setScoreResult(result);
@@ -198,41 +225,26 @@ const HomePage = ({ onNavigate }) => {
     }
   };
 
+
   return (
     <div className="page-container">
-      {/* FIXED LOGOUT BUTTON - POSITIONED ABSOLUTELY */}
-      <div 
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          background: '#dc3545',
-          color: 'white',
-          border: '3px solid #000',
-          padding: '12px 24px',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          zIndex: 999999,
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-          fontFamily: 'Courier New, monospace'
-        }}
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = '/';
-        }}
-        onMouseEnter={(e) => e.target.style.background = '#c82333'}
-        onMouseLeave={(e) => e.target.style.background = '#dc3545'}
-      >
-        Logout
-      </div>
-
       <div className="header">
         <div className="logo">
           <img src='/mlsc.png' alt='logo' height={80} />
         </div>
+        {/* ✅ FIXED LOGOUT BUTTON */}
+        <button 
+          className="logout-button-simple" 
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = '/';
+          }}
+          type="button"
+        >
+          LOGOUT
+        </button>
       </div>
+
 
       <div className="home-content-new">
         <div className="center-title">
@@ -240,17 +252,21 @@ const HomePage = ({ onNavigate }) => {
           <p>Welcome, {localStorage.getItem('participantName')} | Uploads: {uploadCount}/10</p>
         </div>
 
+
         <div className="sidebar">
           <button className="nav-button active">HOME</button>
           <button className="nav-button" onClick={() => onNavigate('leaderboard')}>Leaderboard</button>
           <button className="nav-button" onClick={() => onNavigate('scores')}>My Scores</button>
         </div>
 
+
         <div className="upload-card">
           <label className="file-label">Upload Resume (PDF only)</label>
 
+
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">{success}</div>}
+
 
           <div
             className={`upload-area ${isDragging ? 'dragging' : ''}`}
@@ -291,6 +307,7 @@ const HomePage = ({ onNavigate }) => {
             />
           </div>
 
+
           <button
             className="submit-button"
             onClick={handleSubmit}
@@ -299,9 +316,11 @@ const HomePage = ({ onNavigate }) => {
             {loading ? 'Analyzing Resume...' : 'Submit & Get ATS Score'}
           </button>
 
+
           {scoreResult && (
             <div className="score-result">
               <h3>ATS Score: {scoreResult.score} - {scoreResult.verdict}</h3>
+
 
               {scoreResult.feedback && scoreResult.feedback.length > 0 && (
                 <div className="feedback-section">
@@ -319,14 +338,17 @@ const HomePage = ({ onNavigate }) => {
   );
 };
 
-const MyScoresPage = ({ onNavigate }) => {
+
+const MyScoresPage = ({ onNavigate, onLogout }) => {
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bestScore, setBestScore] = useState(null);
 
+
   useEffect(() => {
     loadScores();
   }, []);
+
 
   const loadScores = async () => {
     try {
@@ -335,6 +357,7 @@ const MyScoresPage = ({ onNavigate }) => {
         setLoading(false);
         return;
       }
+
 
       const data = await apiService.getParticipantScores(participantId);
       setScores(data.scores || []);
@@ -346,41 +369,26 @@ const MyScoresPage = ({ onNavigate }) => {
     }
   };
 
+
   return (
     <div className="page-container">
-      {/* FIXED LOGOUT BUTTON */}
-      <div 
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          background: '#dc3545',
-          color: 'white',
-          border: '3px solid #000',
-          padding: '12px 24px',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          zIndex: 999999,
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-          fontFamily: 'Courier New, monospace'
-        }}
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = '/';
-        }}
-        onMouseEnter={(e) => e.target.style.background = '#c82333'}
-        onMouseLeave={(e) => e.target.style.background = '#dc3545'}
-      >
-        🚪 LOGOUT
-      </div>
-
       <div className="header">
         <div className="logo">
           <img src='/mlsc.png' alt='logo' height={150} />
         </div>
+        {/* ✅ FIXED LOGOUT BUTTON */}
+        <button 
+          className="logout-button-simple" 
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = '/';
+          }}
+          type="button"
+        >
+          LOGOUT
+        </button>
       </div>
+
 
       <div className="leaderboard-content">
         <div className="leaderboard-header">
@@ -388,11 +396,13 @@ const MyScoresPage = ({ onNavigate }) => {
           <h1 className="leaderboard-title">My Scores</h1>
         </div>
 
+
         {bestScore !== null && bestScore > 0 && (
           <div className="best-score">
             <h2>Best Score: {bestScore}</h2>
           </div>
         )}
+
 
         {loading ? (
           <p>Loading scores...</p>
@@ -425,13 +435,16 @@ const MyScoresPage = ({ onNavigate }) => {
   );
 };
 
-const LeaderboardPage = ({ onNavigate }) => {
+
+const LeaderboardPage = ({ onNavigate, onLogout }) => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     loadLeaderboard();
   }, []);
+
 
   const loadLeaderboard = async () => {
     try {
@@ -444,6 +457,7 @@ const LeaderboardPage = ({ onNavigate }) => {
     }
   };
 
+
   const getMedalEmoji = (rank) => {
     if (rank === 1) return '🥇';
     if (rank === 2) return '🥈';
@@ -451,47 +465,33 @@ const LeaderboardPage = ({ onNavigate }) => {
     return '';
   };
 
+
   return (
     <div className="page-container">
-      {/* FIXED LOGOUT BUTTON */}
-      <div 
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          background: '#dc3545',
-          color: 'white',
-          border: '3px solid #000',
-          padding: '12px 24px',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          zIndex: 999999,
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-          fontFamily: 'Courier New, monospace'
-        }}
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = '/';
-        }}
-        onMouseEnter={(e) => e.target.style.background = '#c82333'}
-        onMouseLeave={(e) => e.target.style.background = '#dc3545'}
-      >
-        🚪 LOGOUT
-      </div>
-
       <div className="header">
         <div className="logo">
           <img src='/mlsc.png' alt='logo' height={60} />
         </div>
+        {/* ✅ FIXED LOGOUT BUTTON */}
+        <button 
+          className="logout-button-simple" 
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = '/';
+          }}
+          type="button"
+        >
+          LOGOUT
+        </button>
       </div>
+
 
       <div className="leaderboard-content">
         <div className="leaderboard-header">
           <button className="back-button" onClick={() => onNavigate('home')}>← Back to Home</button>
           <h1 className="leaderboard-title">Leaderboard</h1>
         </div>
+
 
         {loading ? (
           <p>Loading leaderboard...</p>
@@ -524,8 +524,10 @@ const LeaderboardPage = ({ onNavigate }) => {
   );
 };
 
+
 const App = () => {
   const [currentPage, setCurrentPage] = useState('login');
+
 
   useEffect(() => {
     const participantId = localStorage.getItem('participantId');
@@ -534,22 +536,32 @@ const App = () => {
     }
   }, []);
 
+
   const handleLogin = () => {
     setCurrentPage('home');
   };
+
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setCurrentPage('login');
+  };
+
 
   const handleNavigate = (page) => {
     setCurrentPage(page);
   };
 
+
   return (
     <div className="app">
       {currentPage === 'login' && <LoginPage onLogin={handleLogin} />}
-      {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
-      {currentPage === 'scores' && <MyScoresPage onNavigate={handleNavigate} />}
-      {currentPage === 'leaderboard' && <LeaderboardPage onNavigate={handleNavigate} />}
+      {currentPage === 'home' && <HomePage onNavigate={handleNavigate} onLogout={handleLogout} />}
+      {currentPage === 'scores' && <MyScoresPage onNavigate={handleNavigate} onLogout={handleLogout} />}
+      {currentPage === 'leaderboard' && <LeaderboardPage onNavigate={handleNavigate} onLogout={handleLogout} />}
     </div>
   );
 };
+
 
 export default App;
