@@ -192,7 +192,11 @@ const HomePage = ({ onNavigate }) => {
       setSelectedFile(null);
       await loadUploadCount();
     } catch (err) {
-      setError(err.message || 'Submission failed');
+      if (err.message.includes('413')) {
+        setError('File size too large. Please upload a resume smaller than 5MB.');
+      } else {
+        setError(err.message || 'Submission failed');
+      }
     } finally {
       setLoading(false);
     }

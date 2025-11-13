@@ -44,6 +44,12 @@ class APIService {
     if (!response.ok) {
       let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
       
+      // Special handling for 413 Payload Too Large
+      if (response.status === 413) {
+        errorMessage = 'File size too large. Maximum allowed size is 5MB.';
+        throw new Error(errorMessage);
+      }
+      
       try {
         const error = await response.json();
         errorMessage = error.detail || error.message || errorMessage;
