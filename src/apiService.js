@@ -1,7 +1,9 @@
 // src/apiService.js
-// Direct connection to HTTPS backend - no proxy needed
-const API_BASE_URL = "https://backcv.mlsctiet.com";
-const API_KEY = "jwehfuewgfiwehriurehrifwhet";
+// Use relative URLs in development to leverage setupProxy.js
+// In production, this should point to the actual backend URL
+const API_BASE_URL = "https://backcv.mlsctiet.com"// Empty string for relative URLs in development
+
+const API_KEY = process.env.REACT_APP_API_KEY || "jwehfuewgfiwehriurehrifwhet";
 
 // Validate API key on load
 if (!API_KEY) {
