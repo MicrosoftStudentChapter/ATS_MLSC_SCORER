@@ -1,11 +1,8 @@
 // src/apiService.js
-// Use relative URLs in development to leverage setupProxy.js
-// In production, this should point to the actual backend URL
-const API_BASE_URL = "https://backcv.mlsctiet.com"// Empty string for relative URLs in development
+// Use local proxy in development, direct connection in production
+const API_BASE_URL =  "https://backcv.mlsctiet.com";
+const API_KEY = "jwehfuewgfiwehriurehrifwhet";
 
-const API_KEY = process.env.REACT_APP_API_KEY || "jwehfuewgfiwehriurehrifwhet";
-
-// Validate API key on load
 if (!API_KEY) {
   console.error('❌ REACT_APP_API_KEY is not set in .env file!');
   console.error('Please create a .env file with: REACT_APP_API_KEY=your-api-key');
@@ -70,6 +67,7 @@ class APIService {
       
       const response = await fetch(`${API_BASE_URL}/api/register`, {
         method: 'POST',
+        mode: 'cors',
         headers: this.getHeaders(),
         body: JSON.stringify({ name, email, mobile }),
       });
@@ -101,6 +99,7 @@ class APIService {
 
       const response = await fetch(`${API_BASE_URL}/api/submit`, {
         method: 'POST',
+        mode: 'cors',
         headers: headers,
         // Don't set Content-Type for FormData - browser will set it automatically
         body: formData,
@@ -124,6 +123,7 @@ class APIService {
         `${API_BASE_URL}/api/participant/${participantId}/scores`,
         {
           method: 'GET',
+          mode: 'cors',
           headers: this.getHeaders(),
         }
       );
@@ -146,6 +146,7 @@ class APIService {
         `${API_BASE_URL}/api/participant/${participantId}/upload-count`,
         {
           method: 'GET',
+          mode: 'cors',
           headers: this.getHeaders(),
         }
       );
@@ -166,6 +167,7 @@ class APIService {
       
       const response = await fetch(`${API_BASE_URL}/api/leaderboard`, {
         method: 'GET',
+        mode: 'cors',
         headers: this.getHeaders(),
       });
 
@@ -185,6 +187,7 @@ class APIService {
       
       const response = await fetch(`${API_BASE_URL}/api/stats`, {
         method: 'GET',
+        mode: 'cors',
         headers: this.getHeaders(),
       });
 
@@ -202,7 +205,9 @@ class APIService {
     try {
       console.log('🏥 Health check...');
       
-      const response = await fetch(`${API_BASE_URL}/health`);
+      const response = await fetch(`${API_BASE_URL}/health`, {
+        mode: 'cors'
+      });
       
       if (!response.ok) {
         console.warn('⚠️ Health check failed');
