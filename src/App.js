@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import "./App.css";
 import apiService from './apiService';
@@ -96,9 +97,10 @@ const LoginPage = ({ onLogin }) => {
   );
 };
 
-const HomePage = ({ onNavigate }) => {
+const HomePage = ({ onNavigate, onLogout }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  // const [jobDescription, setJobDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -107,7 +109,7 @@ const HomePage = ({ onNavigate }) => {
 
   useEffect(() => {
     loadUploadCount();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadUploadCount = async () => {
     try {
@@ -177,26 +179,30 @@ const HomePage = ({ onNavigate }) => {
       return;
     }
 
-    if (uploadCount >= 10) {
-      setError('You have reached the maximum upload limit (10)');
+    // if (!jobDescription || jobDescription.length < 50) {
+    //   setError('Job description must be at least 50 characters');
+    //   return;
+    // }
+
+    if (uploadCount >= 5) {
+      setError('You have reached the maximum upload limit (5)');
       return;
     }
 
     setLoading(true);
     try {
       const participantId = localStorage.getItem('participantId');
-      const result = await apiService.submitResume(participantId, selectedFile);
+      const result = await apiService.submitResume(
+        participantId,
+        selectedFile,
+      );
 
       setSuccess(`Submission successful! Your ATS Score: ${result.score}`);
       setScoreResult(result);
       setSelectedFile(null);
       await loadUploadCount();
     } catch (err) {
-      if (err.message.includes('413')) {
-        setError('File size too large. Please upload a resume smaller than 5MB.');
-      } else {
-        setError(err.message || 'Submission failed');
-      }
+      setError(err.message || 'Submission failed');
     } finally {
       setLoading(false);
     }
@@ -204,38 +210,13 @@ const HomePage = ({ onNavigate }) => {
 
   return (
     <div className="page-container">
-      {/* FIXED LOGOUT BUTTON - POSITIONED ABSOLUTELY */}
-      <div 
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          background: '#dc3545',
-          color: 'white',
-          border: '3px solid #000',
-          padding: '12px 24px',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          zIndex: 999999,
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-          fontFamily: 'Courier New, monospace'
-        }}
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = '/';
-        }}
-        onMouseEnter={(e) => e.target.style.background = '#c82333'}
-        onMouseLeave={(e) => e.target.style.background = '#dc3545'}
-      >
-        Logout
-      </div>
-
       <div className="header">
         <div className="logo">
           <img src='/mlsc.png' alt='logo' height={80} />
         </div>
+        <button className="logout-button" onClick={onLogout} title="Logout">
+          ⊗ <span className="logout-text">Logout</span>
+        </button>
       </div>
 
       <div className="home-content-new">
@@ -298,7 +279,7 @@ const HomePage = ({ onNavigate }) => {
           <button
             className="submit-button"
             onClick={handleSubmit}
-            disabled={loading || uploadCount >= 10}
+            disabled={loading || uploadCount >= 5}
           >
             {loading ? 'Analyzing Resume...' : 'Submit & Get ATS Score'}
           </button>
@@ -323,14 +304,14 @@ const HomePage = ({ onNavigate }) => {
   );
 };
 
-const MyScoresPage = ({ onNavigate }) => {
+const MyScoresPage = ({ onNavigate, onLogout }) => {
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bestScore, setBestScore] = useState(null);
 
   useEffect(() => {
     loadScores();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadScores = async () => {
     try {
@@ -352,38 +333,13 @@ const MyScoresPage = ({ onNavigate }) => {
 
   return (
     <div className="page-container">
-      {/* FIXED LOGOUT BUTTON */}
-      <div 
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          background: '#dc3545',
-          color: 'white',
-          border: '3px solid #000',
-          padding: '12px 24px',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          zIndex: 999999,
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-          fontFamily: 'Courier New, monospace'
-        }}
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = '/';
-        }}
-        onMouseEnter={(e) => e.target.style.background = '#c82333'}
-        onMouseLeave={(e) => e.target.style.background = '#dc3545'}
-      >
-        🚪 LOGOUT
-      </div>
-
       <div className="header">
         <div className="logo">
           <img src='/mlsc.png' alt='logo' height={150} />
         </div>
+        <button className="logout-button" onClick={onLogout} title="Logout">
+          ⊗ <span className="logout-text">Logout</span>
+        </button>
       </div>
 
       <div className="leaderboard-content">
@@ -429,13 +385,13 @@ const MyScoresPage = ({ onNavigate }) => {
   );
 };
 
-const LeaderboardPage = ({ onNavigate }) => {
+const LeaderboardPage = ({ onNavigate, onLogout }) => {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadLeaderboard();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadLeaderboard = async () => {
     try {
@@ -457,38 +413,13 @@ const LeaderboardPage = ({ onNavigate }) => {
 
   return (
     <div className="page-container">
-      {/* FIXED LOGOUT BUTTON */}
-      <div 
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          background: '#dc3545',
-          color: 'white',
-          border: '3px solid #000',
-          padding: '12px 24px',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          zIndex: 999999,
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-          fontFamily: 'Courier New, monospace'
-        }}
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = '/';
-        }}
-        onMouseEnter={(e) => e.target.style.background = '#c82333'}
-        onMouseLeave={(e) => e.target.style.background = '#dc3545'}
-      >
-        🚪 LOGOUT
-      </div>
-
       <div className="header">
         <div className="logo">
           <img src='/mlsc.png' alt='logo' height={60} />
         </div>
+       <button className="logout-button" onClick={onLogout} title="Logout">
+          ⊗ <span className="logout-text">Logout</span>
+        </button>
       </div>
 
       <div className="leaderboard-content">
@@ -532,6 +463,7 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState('login');
 
   useEffect(() => {
+    // Check if user is already logged in
     const participantId = localStorage.getItem('participantId');
     if (participantId) {
       setCurrentPage('home');
@@ -542,6 +474,11 @@ const App = () => {
     setCurrentPage('home');
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    setCurrentPage('login');
+  };
+
   const handleNavigate = (page) => {
     setCurrentPage(page);
   };
@@ -549,9 +486,9 @@ const App = () => {
   return (
     <div className="app">
       {currentPage === 'login' && <LoginPage onLogin={handleLogin} />}
-      {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
-      {currentPage === 'scores' && <MyScoresPage onNavigate={handleNavigate} />}
-      {currentPage === 'leaderboard' && <LeaderboardPage onNavigate={handleNavigate} />}
+      {currentPage === 'home' && <HomePage onNavigate={handleNavigate} onLogout={handleLogout} />}
+      {currentPage === 'scores' && <MyScoresPage onNavigate={handleNavigate} onLogout={handleLogout} />}
+      {currentPage === 'leaderboard' && <LeaderboardPage onNavigate={handleNavigate} onLogout={handleLogout} />}
     </div>
   );
 };
