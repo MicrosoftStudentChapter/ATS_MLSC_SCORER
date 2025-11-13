@@ -1,6 +1,6 @@
 // Cloudflare Pages Function - Health Check Proxy
 
-const BACKEND_URL = 'http://backend.perfectcv.mlsctiet.com';
+const BACKEND_URL = 'https://backcv.mlsctiet.com';
 
 export async function onRequest(context) {
   const { request } = context;

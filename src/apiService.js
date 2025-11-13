@@ -2,7 +2,7 @@
 // Use empty string to make requests relative to the current domain (uses Cloudflare Pages Functions as proxy)
 // In production: https://perfectcv.mlsctiet.com/api/* -> proxies to -> http://backend.perfectcv.mlsctiet.com/api/*
 // For local development: setupProxy.js proxies /api/* to -> http://backend.perfectcv.mlsctiet.com/api/*
-const API_BASE_URL = "http://backend.perfectcv.mlsctiet.com"; // Empty string uses relative URLs, which are proxied
+const API_BASE_URL = "https://backcv.mlsctiet.com"; // Empty string uses relative URLs, which are proxied
 const API_KEY = "jwehfuewgfiwehriurehrifwhet";
 
 // Validate API key on load

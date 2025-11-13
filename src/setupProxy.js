@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://backend.perfectcv.mlsctiet.com',
+      target: 'https://backcv.mlsctiet.com',
       changeOrigin: true,
       secure: false,
       logLevel: 'debug',
@@ -12,7 +12,7 @@ module.exports = function(app) {
         '^/api': '/api' // Keep /api in the path
       },
       onProxyReq: (proxyReq, req, res) => {
-        console.log('🔄 Proxying:', req.method, req.url, '-> http://backend.perfectcv.mlsctiet.com' + req.url);
+        console.log('🔄 Proxying:', req.method, req.url, '-> https://backcv.mlsctiet.com' + req.url);
       },
       onProxyRes: (proxyRes, req, res) => {
         console.log('✅ Proxy response:', proxyRes.statusCode, req.url);
@@ -27,7 +27,7 @@ module.exports = function(app) {
   app.use(
     '/health',
     createProxyMiddleware({
-      target: 'http://backend.perfectcv.mlsctiet.com',
+      target: 'https://backcv.mlsctiet.com',
       changeOrigin: true,
       secure: false,
       logLevel: 'debug',
