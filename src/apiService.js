@@ -1,6 +1,6 @@
 // src/apiService.js
-// Use local proxy in development, direct connection in production
-const API_BASE_URL =  "https://backcv.mlsctiet.com";
+// Use relative URL to go through Cloudflare Functions proxy with CORS
+const API_BASE_URL = "";
 const API_KEY = "jwehfuewgfiwehriurehrifwhet";
 
 if (!API_KEY) {
