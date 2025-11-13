@@ -1,2 +1,7 @@
 name = "ats-mlsc-scorer"
 pages_build_output_dir = "build"
+[build]
+command = "npm install && npm run build"
+
+[build.environment]
+NODE_VERSION = "18"
